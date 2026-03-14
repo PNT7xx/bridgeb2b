@@ -1,5 +1,17 @@
 {
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" }
+  "functions": {
+    "api/search.js": {
+      "runtime": "edge"
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/search",
+      "dest": "/api/search.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
   ]
 }
