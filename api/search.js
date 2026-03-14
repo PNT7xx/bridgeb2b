@@ -44,28 +44,29 @@ Return this exact JSON structure:
 Make the companies diverse in size and approach. Make contact info realistic but clearly fictional (use 555 numbers). Match score should be between 78-97. Tailor everything specifically to the query.`;
 
   try {
-    const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": process.env.ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 3000,
-        messages: [{ role: "user", content: prompt }],
-      }),
-    });
+    const geminiRes = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: {
+            temperature: 0.7,
+            maxOutputTokens: 3000,
+          },
+        }),
+      }
+    );
 
-    if (!anthropicRes.ok) {
-      const err = await anthropicRes.json();
-      console.error("Anthropic API error:", err);
+    if (!geminiRes.ok) {
+      const err = await geminiRes.json();
+      console.error("Gemini API error:", err);
       return res.status(502).json({ error: "AI service error. Please try again." });
     }
 
-    const data = await anthropicRes.json();
-    const text = data.content.map((i) => i.text || "").join("");
+    const data = await geminiRes.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
     const clean = text.replace(/```json|```/g, "").trim();
     const parsed = JSON.parse(clean);
 
