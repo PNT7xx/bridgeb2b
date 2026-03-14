@@ -1,17 +1,5 @@
 {
-  "functions": {
-    "api/search.js": {
-      "runtime": "edge"
-    }
-  },
-  "routes": [
-    {
-      "src": "/api/search",
-      "dest": "/api/search.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    }
+  "rewrites": [
+    { "source": "/api/search", "destination": "/api/search.js" }
   ]
 }
