@@ -1,0 +1,16 @@
+{
+  "name": "bridgeb2b",
+  "version": "1.0.0",
+  "description": "AI-powered B2B business networking and matchmaking platform",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "devDependencies": {
+    "vercel": "^37.0.0"
+  }
+}
